@@ -1,6 +1,7 @@
 package dao;
 
 import model.BankClient;
+import util.DBHelper;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -8,10 +9,14 @@ import java.util.List;
 
 public class BankClientDAO {
 
-    private Connection connection;
+     private Connection connection;
 
-    public BankClientDAO(Connection connection) {
-        this.connection = connection;
+    public BankClientDAO() {
+        this.connection = DBHelper.getConnection();
+    }
+
+    public Connection getConnection() {
+        return connection;
     }
 
     public List<BankClient> getAllBankClient() throws SQLException {

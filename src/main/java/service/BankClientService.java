@@ -65,10 +65,12 @@ public class BankClientService {
 
     public boolean sendMoneyToClient(BankClient sender, String name, Long value) {
         boolean result = false;
-        Connection connection = getMysqlConnection();
+
+        BankClientDAO dao = new BankClientDAO();
+        Connection connection = dao.getConnection();
+
         try {
             connection.setAutoCommit(false);
-            BankClientDAO dao = new BankClientDAO(connection);
             dao.updateClientsMoney(sender.getName(), sender.getPassword(), value * -1);
 
             BankClient client = dao.getClientByName(name);
@@ -102,30 +104,7 @@ public class BankClientService {
         }
     }
 
-    private static Connection getMysqlConnection() {
-        try {
-            DriverManager.registerDriver((Driver) Class.forName("com.mysql.jdbc.Driver").newInstance());
-
-            StringBuilder url = new StringBuilder();
-
-            url.
-                    append("jdbc:mysql://").        //db type
-                    append("localhost:").           //host name
-                    append("3306/").                //port
-                    append("db_example?").          //db name
-                    append("user=root&").          //login
-                    append("password=ca5e59f2");       //password
-
-            System.out.println("URL: " + url + "\n");
-
-            return DriverManager.getConnection(url.toString());
-        } catch (SQLException | InstantiationException | IllegalAccessException | ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new IllegalStateException();
-        }
-    }
-
-    private static BankClientDAO getBankClientDAO() {
-        return new BankClientDAO(getMysqlConnection());
+     private static BankClientDAO getBankClientDAO() {
+        return new BankClientDAO();
     }
 }
