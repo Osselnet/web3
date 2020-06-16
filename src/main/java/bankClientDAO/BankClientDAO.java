@@ -1,4 +1,4 @@
-package dao;
+package bankClientDAO;
 
 import model.BankClient;
 import util.DBHelper;
